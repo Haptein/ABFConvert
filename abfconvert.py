@@ -7,15 +7,7 @@ import tkinter as tk
 from neo.io import AxonIO
 from tkinter import filedialog, messagebox
 
-root = tk.Tk()
-root.withdraw()
-file_paths=filedialog.askopenfilenames(title="Export to SVG",
-           filetypes =(("ABF Files", "*.abf"),("All Files","*.*")))
-root.destroy()
 
-file_names=[".".join(file_path.split(".")[:-1]) for file_path in file_paths]
-
-#Compression{none,gzip}, Format{tsv,csv}, extension{accordingly, txt}, decimal_separator{. ,}, decimals{6}
 class getparams(tk.Tk):
 
     def __init__(self):
@@ -86,15 +78,21 @@ class getparams(tk.Tk):
         else:
             self.destroy()
 
+
+root = tk.Tk()
+root.withdraw()
+file_paths=filedialog.askopenfilenames(title="Export to SVG",
+           filetypes =(("ABF Files", "*.abf"),("All Files","*.*")))
+root.destroy()
+
+file_names=[".".join(file_path.split(".")[:-1]) for file_path in file_paths]
+
 getparams().mainloop()
-#print(decims, form, comp, ext, dsep)
-#print(type(decims), type(form), type(comp), type(ext), type(dsep))
 
 if form=="TSV":
     sep="\t"
 else:
     sep=","
-
 
 for f in range(len(file_paths)):
     fileout = file_names[f] + '.' + ext
