@@ -88,11 +88,7 @@ root.destroy()
 file_names=[".".join(file_path.split(".")[:-1]) for file_path in file_paths]
 
 getparams().mainloop()
-
-if form=="TSV":
-    sep="\t"
-else:
-    sep=","
+sep = '\t' if form=="TSV" else ','
 
 for f in range(len(file_paths)):
     fileout = file_names[f] + '.' + ext
