@@ -116,3 +116,7 @@ for f in range(len(file_paths)):
             df.to_csv(fileout,float_format=dformat,sep=sep,decimal=dsep)
         else:
             df.to_csv(fileout,float_format=dformat,sep=sep,decimal=dsep,compression='gzip')
+
+fini = tk.Tk()
+fini.withdraw()
+messagebox.showinfo("ABF Convert", "Finished Converting files.")
