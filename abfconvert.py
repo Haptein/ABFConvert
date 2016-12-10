@@ -81,7 +81,7 @@ class getparams(tk.Tk):
 
 root = tk.Tk()
 root.withdraw()
-file_paths=filedialog.askopenfilenames(title="Export to SVG",
+file_paths=filedialog.askopenfilenames(title="Files to Convert",
            filetypes =(("ABF Files", "*.abf"),("All Files","*.*")))
 root.destroy()
 
