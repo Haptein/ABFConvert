@@ -11,5 +11,3 @@ Batch convert Axon ABF files to CSV / TSV.
   - Pandas
   - Neo =>0.4.1
   - tkinter
-
-This script might work with python 2 but no promises.
