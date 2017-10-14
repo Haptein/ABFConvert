@@ -96,7 +96,7 @@ for f in range(len(file_paths)):
     reader = AxonIO(filename = file_paths[f])
     blks = reader.read(cascade=True,lazy=False)
     seg = blks[0].segments
-    f=np.transpose(np.array([seg[0].analogsignals])[0])
+    f=np.transpose(np.array([seg[0].analogsignals])[0])[0]
     df=pd.DataFrame(f)
 
     if decims=="All":
