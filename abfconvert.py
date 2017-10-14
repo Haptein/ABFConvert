@@ -2,6 +2,7 @@
 # coding: utf-8
 # Version 1.0
 
+import os
 import numpy as np
 import pandas as pd
 import tkinter as tk
@@ -31,17 +32,13 @@ class getparams(tk.Tk):
         self.comp0 = tk.Radiobutton(self, text="None", variable=self.comp, value=0)
         self.comp1 = tk.Radiobutton(self, text="GZIP", variable=self.comp, value=1)
         self.comp0.select()
-
-        self.lab2 = tk.Label(self,text="File Extension:")
-        self.ext = tk.Entry(self,width=5)
-        self.ext.insert(0,"txt")
-
-        self.lab3 = tk.Label(self,text="Decimal Separator:")
+ 
+        self.lab2 = tk.Label(self,text="Decimal Separator:")
         self.sep = tk.Entry(self,width=5)
         self.sep.insert(0,".")
 
         self.dvar = tk.StringVar()
-        self.lab4 = tk.Label(self,text="Decimals:")
+        self.lab3 = tk.Label(self,text="Decimals:")
         self.decims = tk.Spinbox(self, values=(0,1,2,3,4,5,6,'All'), textvariable=self.dvar,width=4)
         self.decims.insert('end','All')
         self.dvar.set(6)
@@ -55,26 +52,22 @@ class getparams(tk.Tk):
         self.comp1.grid(row=1,column=2)
 
         self.lab2.grid(row=2,column=0, sticky='W')
-        self.ext.grid(row=2,column=1,columnspan=2)
+        self.sep.grid(row=2,column=1,columnspan=2)
 
         self.lab3.grid(row=3,column=0, sticky='W')
-        self.sep.grid(row=3,column=1,columnspan=2)
+        self.decims.grid(row=3,column=1,columnspan=2)
 
-        self.lab4.grid(row=4,column=0, sticky='W')
-        self.decims.grid(row=4,column=1,columnspan=2)
-
-        self.button.grid(row=5,column=0, columnspan=3)
+        self.button.grid(row=4,column=0, columnspan=3)
 
         self.lift()
 
     def on_button(self):
-        global decims, form, comp, ext, dsep
+        global decims, form, comp, dsep
         decims = self.decims.get()
-        form = self.form.get()
+        form = self.form.get().lower()
         comp = self.comp.get()
         dsep = self.sep.get()
-        ext = self.ext.get()
-        if form=="CSV" and dsep==",":
+        if form=="csv" and dsep==",":
             messagebox.showwarning("Warning", "Using comma as a separator in a Comma Separated Values file generates ambiguity.")
         else:
             self.destroy()
@@ -89,10 +82,10 @@ root.destroy()
 file_names=[".".join(file_path.split(".")[:-1]) for file_path in file_paths]
 
 getparams().mainloop()
-sep = '\t' if form=="TSV" else ','
+sep = '\t' if form=="tsv" else ','
 
 for f in range(len(file_paths)):
-    fileout = file_names[f] + '.' + ext
+    fileout = file_names[f] + '.' + form
     reader = AxonIO(filename = file_paths[f])
     blks = reader.read(cascade=True,lazy=False)
     seg = blks[0].segments
@@ -111,6 +104,9 @@ for f in range(len(file_paths)):
             df.to_csv(fileout,float_format=dformat,sep=sep,decimal=dsep)
         else:
             df.to_csv(fileout,float_format=dformat,sep=sep,decimal=dsep,compression='gzip')
+
+    if comp:
+        os.rename(fileout,fileout + '.gzip')
 
 fini = tk.Tk()
 fini.withdraw()
