@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # coding: utf-8
-# Version 1.0
+# Version 1.1
 
 import os
+import sys
 import numpy as np
 import pandas as pd
 import tkinter as tk
@@ -82,7 +83,11 @@ root.destroy()
 file_names=[".".join(file_path.split(".")[:-1]) for file_path in file_paths]
 
 getparams().mainloop()
-sep = '\t' if form=="tsv" else ','
+
+try:
+    sep = '\t' if form=="tsv" else ','
+except NameError: #window closed without a selection
+    sys.exit()
 
 for f in range(len(file_paths)):
     fileout = file_names[f] + '.' + form
