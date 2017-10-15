@@ -1,5 +1,5 @@
 # ABF-Convert
-Batch convert Axon ABF files to CSV / TSV.
+Batch convert Axon ABF files to HDF5 / CSV / TSV.
 
 <b>Usage:</b>  _python abfconvert.py_
 
@@ -7,7 +7,8 @@ Batch convert Axon ABF files to CSV / TSV.
 
 <b>Requirements:</b>
   - Python3
-  - Numpy >= 1.13.1
+  - Numpy
   - Pandas
+  - PyTables
   - Neo >= 0.5.2
   - tkinter
