@@ -67,7 +67,7 @@ class getparams(tk.Tk):
         comp = self.comp.get()
         dsep = self.sep.get()
         if form=='csv' and dsep==',':
-            messagebox.showwarning('Warning', 'Using comma as a separator in a Comma Separated Values file generates ambiguity.')
+            messagebox.showwarning('Warning', 'Using comma as a separator in a Comma Separated Values file is a dumb thing to do.')
         else:
             self.destroy()
 
@@ -89,7 +89,10 @@ file_paths=filedialog.askopenfilenames(title='Files to Convert',
            filetypes =(('ABF Files', '*.abf'),('All Files','*.*')))
 root.destroy()
 
-file_names=['.'.join(file_path.split('.')[:-1]) for file_path in file_paths]
+if file_paths:
+    file_names=['.'.join(file_path.split('.')[:-1]) for file_path in file_paths]
+else:
+    sys.exit()
 
 getparams().mainloop()
 
