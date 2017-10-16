@@ -97,29 +97,39 @@ else:
 getparams().mainloop()
 
 try:
+    if form == 'hdf5': form = 'h5'
     sep = '\t' if form=='tsv' else ','
     comp = None if comp==0 else 'gzip'
 except NameError: #window closed without a selection
     sys.exit()
 
 for f in range(len(file_paths)):
-    fileout = file_names[f] + '.' + form
-    reader = AxonIO(filename = file_paths[f])
-    blks = reader.read(cascade=True,lazy=False)
-    seg = blks[0].segments
-    f=np.transpose(np.array([seg[0].analogsignals])[0])[0]
-    df=pd.DataFrame(f)
+    filename = file_names[f].split('/')[-1]
+    print('Reading file {}/{}: {}'.format(f+1, len(file_paths), filename) )
+    try:
+        fileout = file_names[f] + '.' + form
+        print('Extracting data.')
+        reader = AxonIO(filename = file_paths[f])
+        blks = reader.read(cascade=True,lazy=False)
+        seg = blks[0].segments
+        f=np.transpose(np.array([seg[0].analogsignals])[0])[0]
 
-    if form == 'hdf5':
-        df.to_hdf(fileout,'data')
-    else:
-        if decims=='All':
-            df.to_csv(fileout,sep=sep,decimal=dsep,compression=comp)
+        print('Writing...')
+        df=pd.DataFrame(f)
+
+        if form == 'h5':
+            df.to_hdf(fileout,'data')
         else:
-            dformat = '%.'+decims+'f'
-            df.to_csv(fileout,float_format=dformat,sep=sep,decimal=dsep,compression=comp)
-        if comp == 'gzip':
-            os.rename(fileout,fileout + '.gzip')
+            if decims=='All':
+                df.to_csv(fileout,sep=sep,decimal=dsep,compression=comp)
+            else:
+                dformat = '%.'+decims+'f'
+                df.to_csv(fileout,float_format=dformat,sep=sep,decimal=dsep,compression=comp)
+            if comp == 'gzip':
+                os.rename(fileout,fileout + '.gzip')
+        print('File {} written sucessfully.'.format(filename + '.' + form))
+    except:
+        print('Couldn\'t process file {} succesfully.'.format(file_names[f]) )
 
 fini = tk.Tk()
 fini.withdraw()
